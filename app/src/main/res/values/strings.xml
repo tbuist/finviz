@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Finviz</string>
+    <string name="search_str">Search</string>
+    <string name="enter_ticker">Enter company name...</string>
 </resources>
