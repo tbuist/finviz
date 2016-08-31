@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:onClick="ChangeLayout"
+        android:onClick="goToSearch"
         app:backgroundTint="#1e7b39"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
