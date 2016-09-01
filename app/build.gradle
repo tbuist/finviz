@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.tbuist.finviz"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -27,5 +27,6 @@ dependencies {
 
     // jsoup HTML parser library @ http://jsoup.org/
     compile 'org.jsoup:jsoup:1.9.2'
+
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
