@@ -29,63 +29,6 @@ import java.util.Iterator;
 
 public class Search extends AppCompatActivity {
 
-    static class StockResult {
-        public String ticker;
-        public String company;
-        public String sector;
-        public String industry;
-        public String country;
-        public String cap;
-
-        public StockResult(String in_ticker, String in_company, String in_sector, String in_industry, String in_country, String in_cap) {
-            this.ticker = in_ticker;
-            this.company = in_company;
-            this.sector = in_sector;
-            this.industry = in_industry;
-            this.country = in_country;
-            this.cap = in_cap;
-        }
-
-        @Override
-        public String toString() {
-            return ticker + " - " + company;
-        }
-    }
-
-    public class StockAdapter extends ArrayAdapter<StockResult> {
-        // View lookup cache
-        private class ViewHolder {
-            TextView tick;
-            TextView comp;
-        }
-        public StockAdapter(Context context, ArrayList<StockResult> users) {
-            super(context, 0, users);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // Get the data item for this position
-            StockResult stockresult = getItem(position);
-            // Check if an existing view is being reused, otherwise inflate the view
-            ViewHolder viewHolder;
-            if (convertView == null) {
-                viewHolder = new ViewHolder();
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.listitem_stock_result, parent, false);
-                viewHolder.tick = (TextView) convertView.findViewById(R.id.result_ticker);
-                viewHolder.comp = (TextView) convertView.findViewById(R.id.result_company);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-            // Populate the data into the template view using the data object
-            viewHolder.tick.setText(stockresult.ticker);
-            viewHolder.comp.setText(stockresult.company);
-            // Return the completed view to render on screen
-            return convertView;
-        }
-    }
-
     private class RetrieveDocumentTask extends AsyncTask<String, Void, Document> {
         @Override
         protected Document doInBackground(String... urls) {
