@@ -1,6 +1,7 @@
 package com.tbuist.finviz;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -105,6 +106,7 @@ class StockStatAdaptor extends ArrayAdapter<StockStat> {
         // Populate the data into the template view using the data object
         viewHolder.stat.setText(stockstat.stat);
         viewHolder.value.setText(stockstat.value);
+        viewHolder.value.setTypeface(Typeface.DEFAULT_BOLD);
         // Return the completed view to render on screen
         return convertView;
     }

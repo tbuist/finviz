@@ -1,14 +1,19 @@
 package com.tbuist.finviz;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,6 +21,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +31,31 @@ import java.util.Iterator;
 
 
 public class SearchResult extends AppCompatActivity {
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
 
     public static final String[] STATS = {"Index", "Market Cap", "Income", "Sales", "Book/sh",
             "Cash/sh", "Dividend", "Dividend %", "Employees", "Optionable", "Shortable", "Recom",
@@ -117,22 +148,20 @@ public class SearchResult extends AppCompatActivity {
             }
 
             ListView lv = (ListView) findViewById(R.id.stock_info);
+            TextView stockname = (TextView)findViewById(R.id.stock_name);
+
+            table = doc.select("table[class=fullview-title]").first();
+            rows = table.getElementsByTag("tr");
+            stockname.setText(rows.get(1).text());
+
+            String link = doc.getElementById("chart0").attr("abs:src");
+            new DownloadImageTask((ImageView) findViewById(R.id.stock_graph)).execute(link);
+
             StockStatAdaptor statAdapter = new StockStatAdaptor(this, sortedStats);
             lv.setAdapter(statAdapter);
 
             final ArrayList<StockStat> finalResults = sortedStats;
 
-            /*
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    Intent intent = new Intent(getApplicationContext(), SearchResult.class);
-                    String ticker = finalResults.get(position).ticker;
-                    intent.putExtra("ticker", ticker);
-                    startActivity(intent);
-                }
-            });
-            */
         }
     }
 }
